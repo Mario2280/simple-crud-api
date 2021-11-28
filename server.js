@@ -7,7 +7,7 @@ const {
 const objects = [];
 class User {
     constructor(name, age, hobbies) {
-        if (typeof name == 'string' && typeof age == 'number' && typeof hobbies == 'object') {
+        if (typeof name == 'string' && typeof age == 'number' && Array.isArray(hobbies)) {
             this.name = name;
             this.age = age;
             this.hobbies = hobbies;
@@ -115,7 +115,7 @@ const server = http.createServer((req, res) => {
                                         ResWithMes(res, "Required fields are missing", 400);
                                     }
                                 } catch (error) {
-                                    ResWithMes(res, 'Incorrect body of request', 404);
+                                    ResWithMes(res, error.message, 404);
                                 }
                             });                             
                         } else {
