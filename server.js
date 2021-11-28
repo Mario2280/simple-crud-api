@@ -38,6 +38,7 @@ const server = http.createServer((req, res) => {
                                 if(isValid(parsedUrl[1])){                               
                                     let result = objects.find((el, i, arr) => el.id == parsedUrl[1]);
                                     if(result != undefined){
+                                        res.setHeader('Content-Type', 'application/json');
                                         ResWithMes(res, Buffer.from(JSON.stringify(result)), 200);
                                     } else {
                                         ResWithMes(res, "PersonId not found", 404);
@@ -62,6 +63,7 @@ const server = http.createServer((req, res) => {
                                                         objects[index].name = body.name;
                                                         objects[index].age = body.age;
                                                         objects[index].hobbies = body.hobbies;
+                                                        res.setHeader('Content-Type', 'application/json');
                                                         ResWithMes(res, Buffer.from(JSON.stringify(objects[index])), 200);
                                                     } else {
                                                         ResWithMes(res, "Incorrect type of fields", 404);
@@ -110,6 +112,7 @@ const server = http.createServer((req, res) => {
                                     if (body.name != null && body.age!= null && body.hobbies!= null) {                                
                                         let newUser = new User(body.name, body.age, body.hobbies);
                                         objects.push(newUser);
+                                        res.setHeader('Content-Type', 'application/json');
                                         ResWithMes(res, Buffer.from(JSON.stringify(newUser)), 201);                            
                                     } else {                           
                                         ResWithMes(res, "Required fields are missing", 400);
@@ -121,9 +124,11 @@ const server = http.createServer((req, res) => {
                         } else {
                             if(req.method == 'GET') {
                                 if(objects.length){  
+                                    res.setHeader('Content-Type', 'application/json');
                                     ResWithMes(res, Buffer.from(JSON.stringify(objects)), 200);
                                 } else {
-                                    ResWithMes(res, "List of persons is empty ", 404);
+                                    res.setHeader('Content-Type', 'application/json');
+                                    ResWithMes(res, Buffer.from(JSON.stringify(objects)), 200);
                                 }           
                             } else {
                                 ResWithMes(res, `Unprocessed ${req.method} request`, 404);
@@ -146,7 +151,7 @@ const server = http.createServer((req, res) => {
 
 
 server.listen(PORT, () => {
-    objects.push({name:'qwe', age:12, hobbies: [], id:uuidv4(),});
-    objects.push({name:'asd', age:122, hobbies: [], id:uuidv4(),});
+    // objects.push({name:'qwe', age:12, hobbies: [], id:uuidv4(),});
+    // objects.push({name:'asd', age:122, hobbies: [], id:uuidv4(),});
     console.log(`listening on port ${PORT}`);
 });
